@@ -1,0 +1,86 @@
+solid fractal_explorer_stl_fins
+facet normal 0 0 0
+outer loop
+vertex 0 0 0
+vertex 40 0 0
+vertex 5 20 0
+endloop
+endfacet
+facet normal 0 0 0
+outer loop
+vertex 40 0 0
+vertex 5 20 0
+vertex 25 20 0
+endloop
+endfacet
+facet normal 0 0 0
+outer loop
+vertex 0 0 0
+vertex 0 0 1
+vertex 40 0 0
+endloop
+endfacet
+facet normal 0 0 0
+outer loop
+vertex 40 0 0
+vertex 0 0 1
+vertex 40 0 1
+endloop
+endfacet
+facet normal 0 0 0
+outer loop
+vertex 5 20 0
+vertex 0 0 1
+vertex 5 20 1
+endloop
+endfacet
+facet normal 0 0 0
+outer loop
+vertex 25 20 1
+vertex 0 0 1
+vertex 5 20 1
+endloop
+endfacet
+facet normal 0 0 0
+outer loop
+vertex 5 20 0
+vertex 25 20 0
+vertex 5 20 1
+endloop
+endfacet
+facet normal 0 0 0
+outer loop
+vertex 25 20 1
+vertex 25 20 0
+vertex 5 20 1
+endloop
+endfacet
+facet normal 0 0 0
+outer loop
+vertex 0 0 0
+vertex 5 20 0
+vertex 0 0 1
+endloop
+endfacet
+facet normal 0 0 0
+outer loop
+vertex 5 20 1
+vertex 5 20 0
+vertex 0 0 1
+endloop
+endfacet
+facet normal 0 0 0
+outer loop
+vertex 0 0 1
+vertex 40 0 1
+vertex 5 20 1
+endloop
+endfacet
+facet normal 0 0 0
+outer loop
+vertex 40 0 1
+vertex 5 20 1
+vertex 25 20 1
+endloop
+endfacet
+endsolid fractal_explorer_stl_fins
