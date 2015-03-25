@@ -1,16 +1,31 @@
 #!/usr/bin/env python
 
+import sys
+import math
+
 #prisms = [[(0,0,0), (40,0,0), (5,20,0), (25,20,0),
 #    (0,0,0.7), (40,0,0.7), (5,20,0.7), (25,20,0.7)]]
 
 def add_one_layer(prisms, scale, thickness=0.7):
-  last_layer = prisms[-1]
+  last_layer = prisms[-1][:]
   z = last_layer[1][0] - last_layer[0][0]
   y = thickness
   x = last_layer[2][1] - last_layer[0][1]
   delta_z = last_layer[2][0] - last_layer[0][0]
   delta_top_z = last_layer[1][0] - last_layer[3][0]
-  
+  for count in xrange(2):
+    new_layer = []
+    sin_t = math.sin(math.pi/3)
+    cos_t = math.cos(math.pi/3)
+    if count == 1:
+      sin_t = math.sin(-math.pi/3)
+      cos_t = math.cos(-math.pi/3)
+    for point in last_layer:
+      current = [point[0]*scale, point[1]*scale, point[2]]
+      new_layer.append([current[0], 
+                        current[1]*cos_t - current[2]*sin_t+x,
+                        current[2]*cos_t + current[1]*sin_t])
+    prisms.append(new_layer)
 
 def print_face(face1, face2, face3):
   print 'facet normal 0 0 0'
@@ -38,8 +53,7 @@ def print_prisms(prisms):
     print_face(prism[5], prism[6], prism[7])
   print 'endsolid fractal_explorer_stl_fins'
 
-prisms = [[(0,0,0), (40,0,0), (5,20,0), (25,20,0),
-    (0,0,0.7), (40,0,0.7), (5,20,0.7), (25,20,0.7)]]
-add_one_layer(prisms)
-
-print_prisms(prisms, 0.6)
+prisms = [[[0,0,0], [40,0,0], [5,20,0], [25,20,0],
+    [0,0,0.7], [40,0,0.7], [5,20,0.7], [25,20,0.7]]]
+add_one_layer(prisms, 0.6)
+print_prisms(prisms)
