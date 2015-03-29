@@ -2,17 +2,15 @@
 
 import sys
 import math
+import geometry
 
 #prisms = [[(0,0,0), (40,0,0), (5,20,0), (25,20,0),
 #    (0,0,0.7), (40,0,0.7), (5,20,0.7), (25,20,0.7)]]
 
-def add_one_layer(prisms, scale, thickness=0.7):
-  last_layer = prisms[-1][:]
-  z = last_layer[1][0] - last_layer[0][0]
-  y = thickness
-  x = last_layer[2][1] - last_layer[0][1]
-  delta_z = last_layer[2][0] - last_layer[0][0]
-  delta_top_z = last_layer[1][0] - last_layer[3][0]
+def add_one_layer(prisms, which=-1, scale=0.54):
+  last_layer = prisms[which][:]
+  dir = [0., last_layer[2][1] - last_layer[0][1],
+         last_layer[2][2] - last_layer[0][2]]
   for count in xrange(2):
     new_layer = []
     sin_t = math.sin(math.pi/3)
@@ -20,11 +18,16 @@ def add_one_layer(prisms, scale, thickness=0.7):
     if count == 1:
       sin_t = math.sin(-math.pi/3)
       cos_t = math.cos(-math.pi/3)
-    for point in last_layer:
-      current = [point[0]*scale, point[1]*scale, point[2]]
-      new_layer.append([current[0], 
-                        current[1]*cos_t - current[2]*sin_t+x,
-                        current[2]*cos_t + current[1]*sin_t])
+    for point_count, point in enumerate(last_layer):
+      current = [(11.0+point[0])*scale,
+                 (point[1]-last_layer[0][1])*scale,
+                 (point[2]-last_layer[0][2])*scale]
+      new_layer.append([current[0],
+                        current[1]*cos_t - current[2]*sin_t + last_layer[2][1],
+                        current[2]*cos_t + current[1]*sin_t + last_layer[2][2]])
+#      new_layer.append([current[0],
+#                        current[1]*cos_t - current[2]*sin_t + dir[1],
+#                        current[2]*cos_t + current[1]*sin_t + dir[2]])
     prisms.append(new_layer)
 
 def print_face(face1, face2, face3):
@@ -53,7 +56,24 @@ def print_prisms(prisms):
     print_face(prism[5], prism[6], prism[7])
   print 'endsolid fractal_explorer_stl_fins'
 
-prisms = [[[0,0,0], [40,0,0], [5,20,0], [25,20,0],
-    [0,0,0.7], [40,0,0.7], [5,20,0.7], [25,20,0.7]]]
-add_one_layer(prisms, 0.6)
+def thickenate(prisms, thickness=0.7):
+  for prism in prisms:
+    bMinusA = geometry.getNormalVector(prism[1], prism[0])
+    cMinusA = geometry.getNormalVector(prism[2], prism[0])
+    normal = geometry.normalizeVector(geometry.cross(bMinusA, cMinusA))
+    for point in prism:
+      for coord in xrange(3):
+        point[coord] = point[coord] - normal[coord] * thickness/2.0
+    newPoints = []
+    for point in prism:
+      newPoint = []
+      for coord in xrange(3):
+        newPoint.append(point[coord] + normal[coord] * thickness)
+      newPoints.append(newPoint)
+    prism.extend(newPoints)
+
+prisms = [[[5.,0.,0.], [50.,0.,0.], [10.,20.,0.], [33.,20.,0.]]]
+for count in xrange(100):
+  add_one_layer(prisms, count)
+thickenate(prisms)
 print_prisms(prisms)
