@@ -56,8 +56,17 @@ def print_prisms(prisms):
     print_face(prism[5], prism[6], prism[7])
   print 'endsolid fractal_explorer_stl_fins'
 
-def thickenate(prisms, thickness=0.7):
-  for prism in prisms:
+def thickenate(prisms,
+               thicknessMap={0:1.0, 1:0.9, 2:0.8, 3:0.7, 4:0.7, 5:0.7},
+               minThickness=0.6):
+  for count, prism in enumerate(prisms):
+    thickness = minThickness
+    if count > 0:
+      layer_count = int(math.log(count, 2))
+    else:
+      layer_count = 0
+    if layer_count in thicknessMap.keys():
+      thickness = thicknessMap[layer_count]
     bMinusA = geometry.getNormalVector(prism[1], prism[0])
     cMinusA = geometry.getNormalVector(prism[2], prism[0])
     normal = geometry.normalizeVector(geometry.cross(bMinusA, cMinusA))
@@ -72,8 +81,8 @@ def thickenate(prisms, thickness=0.7):
       newPoints.append(newPoint)
     prism.extend(newPoints)
 
-prisms = [[[5.,0.,0.], [50.,0.,0.], [10.,20.,0.], [33.,20.,0.]]]
-for count in xrange(100):
+prisms = [[[5.,0.,0.], [50.,0.,0.], [8.5,20.,0.], [33.,20.,0.]]]
+for count in xrange(1000):
   add_one_layer(prisms, count)
 thickenate(prisms)
 print_prisms(prisms)
